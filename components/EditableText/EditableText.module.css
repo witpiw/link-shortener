@@ -1,0 +1,12 @@
+.editable-text {
+    appearance: none;
+    display: inline-block;
+font-weight: 700;}
+
+.editable-text:hover {
+    cursor:text;
+}
+
+.editable-text:focus {
+    outline: none;
+}
