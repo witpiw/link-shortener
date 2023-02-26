@@ -1,4 +1,5 @@
 import LinkList from "./LinkList";
 import Modal from "./Modal";
+import Header from "./Header";
 
-export { LinkList, Modal };
+export { LinkList, Modal, Header };

@@ -1,6 +1,6 @@
-import { LinkList, Modal } from "../components";
+import { LinkList, Modal, Header } from "../components";
 
-import { Heading, Flex } from "@chakra-ui/react";
+import { Flex, Text } from "@chakra-ui/react";
 import { If, Then, Else } from "react-if";
 import { useUser } from "@supabase/auth-helpers-react";
 
@@ -10,7 +10,7 @@ export default function Home() {
 	return (
 		<>
 			<Flex direction={"column"} justify={"center"} align={"center"} gap={15}>
-				<Heading as="h1">Link shortener</Heading>
+				<Header />
 				<div>
 					<If condition={!!user}>
 						<Then>
@@ -24,7 +24,9 @@ export default function Home() {
 								<Modal />
 							</Flex>
 						</Then>
-						<Else>loading ...</Else>
+						<Else>
+							<Text>Loading ...</Text>
+						</Else>
 					</If>
 				</div>
 			</Flex>
