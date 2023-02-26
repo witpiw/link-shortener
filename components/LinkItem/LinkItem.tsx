@@ -1,4 +1,5 @@
 import { Database } from "../../types/supabase";
+import { useSyncListContextStore } from "../../context";
 
 import { useSupabaseClient } from "@supabase/auth-helpers-react";
 import {
@@ -15,6 +16,8 @@ function LinkItem(props: Database["public"]["Tables"]["links"]["Row"]) {
 	const toast = useToast();
 	const supabase = useSupabaseClient();
 
+	const sync = useSyncListContextStore((state) => state.sync);
+
 	async function handleDelete() {
 		const { error } = await supabase.from("links").delete().eq("id", props.id);
 
@@ -26,6 +29,8 @@ function LinkItem(props: Database["public"]["Tables"]["links"]["Row"]) {
 				isClosable: true,
 			});
 		}
+
+		sync();
 	}
 
 	function handleCopy() {

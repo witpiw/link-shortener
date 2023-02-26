@@ -1,4 +1,5 @@
 import LinkItem from "../LinkItem";
+import { useSyncListContextStore } from "../../context";
 
 import { List, Flex } from "@chakra-ui/react";
 import { useSupabaseClient, useUser } from "@supabase/auth-helpers-react";
@@ -8,6 +9,8 @@ function LinkList() {
 	const [links, setLinks] = useState<any[]>([]);
 	const supabaseClient = useSupabaseClient();
 	const user = useUser();
+
+	const sync = useSyncListContextStore((state) => state.syncCount);
 
 	useEffect(() => {
 		async function fetchLinks() {
@@ -22,7 +25,7 @@ function LinkList() {
 		}
 
 		fetchLinks();
-	}, [user]);
+	}, [user, sync]);
 
 	return (
 		<List>

@@ -1,4 +1,5 @@
 import { isLink } from "../../utils";
+import { useSyncListContextStore } from "../../context";
 
 import { FormEvent, useRef, useState } from "react";
 import {
@@ -20,11 +21,12 @@ import { nanoid } from "nanoid";
 function Modal() {
 	const supabaseClient = useSupabaseClient();
 	const user = useUser();
-
 	const { isOpen, onOpen, onClose } = useDisclosure();
 
 	const initialRef = useRef(null);
 	const [link, setLink] = useState("");
+
+	const sync = useSyncListContextStore((state) => state.sync);
 
 	async function handleSubmit(e: FormEvent) {
 		e.preventDefault();
@@ -41,6 +43,7 @@ function Modal() {
 			errorCode = Number(error?.code);
 		}
 
+		sync();
 		onClose();
 	}
 
