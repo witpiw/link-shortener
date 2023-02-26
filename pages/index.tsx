@@ -1,4 +1,4 @@
-import { EditableText, LinkList, Modal } from "../components";
+import { LinkList, Modal } from "../components";
 
 import { Heading, Flex } from "@chakra-ui/react";
 import { If, Then, Else } from "react-if";
