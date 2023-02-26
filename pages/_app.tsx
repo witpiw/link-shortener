@@ -1,4 +1,5 @@
 import type { AppProps } from "next/app";
+import { Database } from "../types/supabase";
 
 import { createBrowserSupabaseClient } from "@supabase/auth-helpers-nextjs";
 import { SessionContextProvider, Session } from "@supabase/auth-helpers-react";
@@ -15,7 +16,9 @@ function MyApp({
 }: AppProps<{
 	initialSession: Session;
 }>) {
-	const [supabaseClient] = useState(() => createBrowserSupabaseClient());
+	const [supabaseClient] = useState(() =>
+		createBrowserSupabaseClient<Database>()
+	);
 
 	return (
 		<SessionContextProvider
