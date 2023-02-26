@@ -10,14 +10,19 @@ export default function Home() {
 	return (
 		<>
 			<Flex direction={"column"} justify={"center"} align={"center"} gap={15}>
-				<Heading>Link shortener</Heading>
+				<Heading as="h1">Link shortener</Heading>
 				<div>
 					<If condition={!!user}>
 						<Then>
-							Hi <EditableText initialValue={user?.user_metadata.username} />
-							<hr />
-							<LinkList />
-							<Modal />
+							<Flex
+								direction={"column"}
+								justify="center"
+								align="center"
+								gap={8}
+							>
+								<LinkList />
+								<Modal />
+							</Flex>
 						</Then>
 						<Else>loading ...</Else>
 					</If>

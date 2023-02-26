@@ -1,4 +1,6 @@
-import { List, ListItem } from "@chakra-ui/react";
+import LinkItem from "../LinkItem";
+
+import { List, Flex } from "@chakra-ui/react";
 import { useSupabaseClient, useUser } from "@supabase/auth-helpers-react";
 import { useEffect, useState } from "react";
 
@@ -24,9 +26,11 @@ function LinkList() {
 
 	return (
 		<List>
-			{links.map((item, idx) => (
-				<ListItem key={idx}>{item.link_slug}</ListItem>
-			))}
+			<Flex direction={"column"} justify="center" align={"center"} gap={4}>
+				{links.map((item, idx) => (
+					<LinkItem {...item} key={idx} />
+				))}
+			</Flex>
 		</List>
 	);
 }
