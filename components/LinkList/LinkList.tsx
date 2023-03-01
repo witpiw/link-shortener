@@ -28,7 +28,7 @@ function LinkList() {
 	}, [user, sync]);
 
 	return (
-		<List>
+		<List maxW={"100vw"}>
 			<Flex direction={"column"} justify="center" align={"center"} gap={4}>
 				{links.map((item, idx) => (
 					<LinkItem {...item} key={idx} />

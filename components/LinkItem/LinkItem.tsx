@@ -7,6 +7,7 @@ import {
 	Flex,
 	Button,
 	ButtonGroup,
+	Divider,
 	Link,
 	useToast,
 } from "@chakra-ui/react";
@@ -82,6 +83,7 @@ function LinkItem(props: Database["public"]["Tables"]["links"]["Row"]) {
 					</Button>
 				</ButtonGroup>
 			</Flex>
+			<Divider p={4} />
 		</ListItem>
 	);
 }
