@@ -6,11 +6,11 @@ import { useSupabaseClient, useUser } from "@supabase/auth-helpers-react";
 import { useEffect, useState } from "react";
 
 function LinkList() {
+	const sync = useSyncListContextStore((state) => state.syncCount);
+
 	const [links, setLinks] = useState<any[]>([]);
 	const supabaseClient = useSupabaseClient();
 	const user = useUser();
-
-	const sync = useSyncListContextStore((state) => state.syncCount);
 
 	useEffect(() => {
 		async function fetchLinks() {

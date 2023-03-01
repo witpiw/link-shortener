@@ -14,10 +14,10 @@ import {
 import { DeleteIcon, CopyIcon } from "@chakra-ui/icons";
 
 function LinkItem(props: Database["public"]["Tables"]["links"]["Row"]) {
+	const sync = useSyncListContextStore((state) => state.sync);
+
 	const toast = useToast();
 	const supabase = useSupabaseClient();
-
-	const sync = useSyncListContextStore((state) => state.sync);
 
 	async function handleDelete() {
 		const { error } = await supabase.from("links").delete().eq("id", props.id);
