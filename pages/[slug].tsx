@@ -3,7 +3,7 @@ import { Database } from "../types/supabase";
 import { createServerSupabaseClient } from "@supabase/auth-helpers-nextjs";
 import type { GetServerSidePropsContext } from "next";
 import { useEffect, useState } from "react";
-import { Flex, Text } from "@chakra-ui/react";
+import { Flex, Text, Link } from "@chakra-ui/react";
 
 function Redirect(props: { redirect_to: string }) {
 	const REDIRECT_WAITING_TIME = 3000;
@@ -27,11 +27,17 @@ function Redirect(props: { redirect_to: string }) {
 
 	return (
 		<>
-			<Text pt={20} h="10vh" textAlign={"center"} fontSize={"xl"}>
+			<Text pt={20} h="10vh" textAlign={"center"} fontSize={"2xl"}>
 				You will be redirected in {timeLeft}
 			</Text>
+			<Text fontSize={"xs"} h="5vh" textAlign={"center"} pt={10}>
+				or simply click{" "}
+				<Link textDecoration={"underline"} href={props.redirect_to}>
+					here
+				</Link>
+			</Text>
 			<Flex
-				h="90vh"
+				h="85vh"
 				justifyContent={"center"}
 				alignItems={"center"}
 				direction={"column"}
