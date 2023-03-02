@@ -12,9 +12,9 @@ import {
 	ModalBody,
 	ModalCloseButton,
 	Input,
+	Icon,
 	ModalFooter,
 } from "@chakra-ui/react";
-import { AddIcon } from "@chakra-ui/icons";
 import { useUser, useSupabaseClient } from "@supabase/auth-helpers-react";
 import { nanoid } from "nanoid";
 
@@ -50,7 +50,9 @@ function Modal() {
 	return (
 		<>
 			<Button onClick={onOpen}>
-				<AddIcon />
+				<Icon viewBox="0 0 500 500">
+					<path d="M240 80c0-17.7-14.3-32-32-32s-32 14.3-32 32V224H32c-17.7 0-32 14.3-32 32s14.3 32 32 32H176V432c0 17.7 14.3 32 32 32s32-14.3 32-32V288H384c17.7 0 32-14.3 32-32s-14.3-32-32-32H240V80z"/>
+				</Icon>
 			</Button>
 
 			<ChModal
