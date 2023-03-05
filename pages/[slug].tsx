@@ -17,16 +17,13 @@ function Redirect(props: Database["public"]["Tables"]["links"]["Row"]) {
 
 		const formattedDate = `${date.getFullYear()}-${date.getMonth()}-${date.getDate()}`;
 
-		const { data, count, error } = await supabase
+		const { count, error } = await supabase
 			.from("link_visits")
 			.select("*", { count: "exact", head: true })
 			.eq("link_id", props.id)
 			.eq("date", formattedDate);
 
-		if (error) {
-			console.log("1" + error.message);
-			return;
-		}
+		if (error) return;
 
 		if (count === 0 || !count) {
 			const { error } = await supabase.from("link_visits").insert({
@@ -36,10 +33,7 @@ function Redirect(props: Database["public"]["Tables"]["links"]["Row"]) {
 				unique_visits: 1,
 			});
 
-			if (error) {
-				console.log("2" + error.message);
-				return;
-			}
+			if (error) return;
 		}
 
 		await supabase.rpc("increment_total", {
