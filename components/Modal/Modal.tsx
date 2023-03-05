@@ -14,6 +14,7 @@ import {
 	Input,
 	Icon,
 	ModalFooter,
+	useToast,
 } from "@chakra-ui/react";
 import { useUser, useSupabaseClient } from "@supabase/auth-helpers-react";
 import { nanoid } from "nanoid";
@@ -22,6 +23,7 @@ function Modal() {
 	const supabaseClient = useSupabaseClient();
 	const user = useUser();
 	const { isOpen, onOpen, onClose } = useDisclosure();
+	const toast = useToast();
 
 	const initialRef = useRef(null);
 	const [link, setLink] = useState("");
@@ -31,7 +33,10 @@ function Modal() {
 	async function handleSubmit(e: FormEvent) {
 		e.preventDefault();
 
-		if (!isLink(link) || !user) return;
+		if (!user) return;
+		if (!isLink(link)) {
+			return toast({ status: "error", description: "Invalid URL format" });
+		}
 
 		let errorCode = 2305; // duplicate link_slug key
 
@@ -44,6 +49,7 @@ function Modal() {
 		}
 
 		sync();
+		setLink("");
 		onClose();
 	}
 
@@ -51,7 +57,7 @@ function Modal() {
 		<>
 			<Button onClick={onOpen}>
 				<Icon viewBox="0 0 500 500">
-					<path d="M240 80c0-17.7-14.3-32-32-32s-32 14.3-32 32V224H32c-17.7 0-32 14.3-32 32s14.3 32 32 32H176V432c0 17.7 14.3 32 32 32s32-14.3 32-32V288H384c17.7 0 32-14.3 32-32s-14.3-32-32-32H240V80z"/>
+					<path d="M240 80c0-17.7-14.3-32-32-32s-32 14.3-32 32V224H32c-17.7 0-32 14.3-32 32s14.3 32 32 32H176V432c0 17.7 14.3 32 32 32s32-14.3 32-32V288H384c17.7 0 32-14.3 32-32s-14.3-32-32-32H240V80z" />
 				</Icon>
 			</Button>
 
@@ -59,7 +65,10 @@ function Modal() {
 				isCentered
 				initialFocusRef={initialRef}
 				isOpen={isOpen}
-				onClose={onClose}
+				onClose={() => {
+					onClose();
+					setLink("");
+				}}
 				size={"xl"}
 			>
 				<ModalOverlay backdropFilter="blur(2px)" />
@@ -69,12 +78,11 @@ function Modal() {
 					<ModalBody>
 						<form id="linkForm" onSubmit={handleSubmit}>
 							<Input
-								pattern="^(http(s)?:\/\/)?([\w\-]+\.)+[\w\-]+(\/[\w\- .\/?%&=]*)?$"
 								required
 								type={"text"}
 								value={link}
 								onInput={(e) => setLink((e.target as HTMLInputElement).value)}
-								placeholder={"e.g. www.youtube.com/watch?v=dQw4w9WgXcQ"}
+								placeholder={"e.g. https://www.youtube.com/watch?v=dQw4w9WgXcQ"}
 							></Input>
 						</form>
 					</ModalBody>

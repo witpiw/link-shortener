@@ -1,5 +1,5 @@
 function isLink(str: string): boolean {
-	const pattern = /^(http(s)?:\/\/)?([\w-]+\.)+[\w-]+(\/[\w- ./?%&=]*)?$/;
+	const pattern = /^https?:\/\/.*/;
 	return pattern.test(str);
 }
 
