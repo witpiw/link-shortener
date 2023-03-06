@@ -5,12 +5,14 @@ import { useSupabaseClient } from "@supabase/auth-helpers-react";
 import type { GetServerSidePropsContext } from "next";
 import { useEffect, useState } from "react";
 import { Flex, Text, Link } from "@chakra-ui/react";
+import { useRouter } from "next/router";
 
 const REDIRECT_WAITING_TIME = 3000;
 
 function Redirect(props: Database["public"]["Tables"]["links"]["Row"]) {
 	const [timeLeft, setTimeLeft] = useState(REDIRECT_WAITING_TIME / 1000);
 	const supabase = useSupabaseClient();
+	const router = useRouter();
 
 	async function gatherStatsData() {
 		const date = new Date();
@@ -51,14 +53,14 @@ function Redirect(props: Database["public"]["Tables"]["links"]["Row"]) {
 	}
 
 	useEffect(() => {
-		(async () => await gatherStatsData())();
+		gatherStatsData();
 
 		const intervalId = setInterval(() => {
 			setTimeLeft((timeLeft) => timeLeft - 1);
 		}, 1000);
 
 		const timeoutId = setTimeout(() => {
-			location.href = props.redirect_to;
+			router.push(props.redirect_to);
 		}, REDIRECT_WAITING_TIME);
 
 		return () => {
