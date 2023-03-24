@@ -1,22 +1,66 @@
 import { Database } from "../types/supabase";
 
 import { createServerSupabaseClient } from "@supabase/auth-helpers-nextjs";
+import { useSupabaseClient } from "@supabase/auth-helpers-react";
 import type { GetServerSidePropsContext } from "next";
 import { useEffect, useState } from "react";
 import { Flex, Text, Link } from "@chakra-ui/react";
+import { useRouter } from "next/router";
 
-function Redirect(props: { redirect_to: string }) {
-	const REDIRECT_WAITING_TIME = 3000;
+const REDIRECT_WAITING_TIME = 3000;
 
+function Redirect(props: Database["public"]["Tables"]["links"]["Row"]) {
 	const [timeLeft, setTimeLeft] = useState(REDIRECT_WAITING_TIME / 1000);
+	const supabase = useSupabaseClient();
+	const router = useRouter();
+
+	async function gatherStatsData() {
+		const date = new Date();
+
+		const formattedDate = `${date.getFullYear()}-${date.getMonth()+1}-${date.getDate()}`;
+
+		const { count, error } = await supabase
+			.from("link_visits")
+			.select("*", { count: "exact", head: true })
+			.eq("link_id", props.id)
+			.eq("date", formattedDate);
+
+		if (error) return;
+
+		if (count === 0 || !count) {
+			const { error } = await supabase.from("link_visits").insert({
+				date: formattedDate,
+				link_id: props.id,
+				total_visits: 0,
+				unique_visits: 0,
+			});
+
+			if (error) return;
+		}
+
+		await supabase.rpc("increment_total", {
+			link_uuid: props.id,
+			visit_date: formattedDate,
+		});
+
+		if (!window.localStorage.getItem("visited")) {
+			window.localStorage.setItem("visited", "true");
+			await supabase.rpc("increment_unique", {
+				link_uuid: props.id,
+				visit_date: formattedDate,
+			});
+		}
+	}
 
 	useEffect(() => {
+		gatherStatsData();
+
 		const intervalId = setInterval(() => {
 			setTimeLeft((timeLeft) => timeLeft - 1);
 		}, 1000);
 
 		const timeoutId = setTimeout(() => {
-			location.href = props.redirect_to;
+			router.push(props.redirect_to);
 		}, REDIRECT_WAITING_TIME);
 
 		return () => {
@@ -55,7 +99,7 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
 
 	const { data, error } = await supabase
 		.from("links")
-		.select("redirect_to")
+		.select("*")
 		.eq("link_slug", context.params.slug);
 
 	if (error || !data[0]) {
@@ -67,10 +111,8 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
 		};
 	}
 
-	const redirect_to = data[0].redirect_to;
-
 	return {
-		props: { redirect_to },
+		props: data[0],
 	};
 }
 

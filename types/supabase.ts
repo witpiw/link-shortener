@@ -9,6 +9,29 @@ export type Json =
 export interface Database {
   public: {
     Tables: {
+      link_visits: {
+        Row: {
+          date: string
+          id: string
+          link_id: string
+          total_visits: number
+          unique_visits: number
+        }
+        Insert: {
+          date: string
+          id?: string
+          link_id: string
+          total_visits?: number
+          unique_visits?: number
+        }
+        Update: {
+          date?: string
+          id?: string
+          link_id?: string
+          total_visits?: number
+          unique_visits?: number
+        }
+      }
       links: {
         Row: {
           id: string
@@ -48,7 +71,20 @@ export interface Database {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      increment_total: {
+        Args: {
+          link_uuid: string
+          visit_date: string
+        }
+        Returns: undefined
+      }
+      increment_unique: {
+        Args: {
+          link_uuid: string
+          visit_date: string
+        }
+        Returns: undefined
+      }
     }
     Enums: {
       [_ in never]: never

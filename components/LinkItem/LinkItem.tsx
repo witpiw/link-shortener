@@ -15,6 +15,7 @@ import {
 } from "@chakra-ui/react";
 import { If, Then } from "react-if";
 import { useState } from "react";
+import { useRouter } from "next/router";
 
 function LinkItem(props: Database["public"]["Tables"]["links"]["Row"]) {
 	const sync = useSyncListContextStore((state) => state.sync);
@@ -22,6 +23,8 @@ function LinkItem(props: Database["public"]["Tables"]["links"]["Row"]) {
 	const [qrOpen, setQrOpen] = useState(false)
 	const toast = useToast();
 	const supabase = useSupabaseClient();
+
+	const router = useRouter()
 
 	async function handleDelete() {
 		const { error } = await supabase.from("links").delete().eq("id", props.id);
@@ -82,6 +85,11 @@ function LinkItem(props: Database["public"]["Tables"]["links"]["Row"]) {
 					<Button onClick={handleCopy}>
 						<Icon viewBox="0 0 500 500">
 							<path d="M224 0c-35.3 0-64 28.7-64 64V288c0 35.3 28.7 64 64 64H448c35.3 0 64-28.7 64-64V64c0-35.3-28.7-64-64-64H224zM64 160c-35.3 0-64 28.7-64 64V448c0 35.3 28.7 64 64 64H288c35.3 0 64-28.7 64-64V384H288v64H64V224h64V160H64z"/>
+						</Icon>
+					</Button>
+					<Button onClick={() => router.push(`/stats/${props.link_slug}`)}>
+						<Icon viewBox="0 0 500 500">
+							<path d="M160 80c0-26.5 21.5-48 48-48h32c26.5 0 48 21.5 48 48V432c0 26.5-21.5 48-48 48H208c-26.5 0-48-21.5-48-48V80zM0 272c0-26.5 21.5-48 48-48H80c26.5 0 48 21.5 48 48V432c0 26.5-21.5 48-48 48H48c-26.5 0-48-21.5-48-48V272zM368 96h32c26.5 0 48 21.5 48 48V432c0 26.5-21.5 48-48 48H368c-26.5 0-48-21.5-48-48V144c0-26.5 21.5-48 48-48z"/>						
 						</Icon>
 					</Button>
 					<Button onClick={() => setQrOpen(!qrOpen)}>
