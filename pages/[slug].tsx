@@ -17,7 +17,7 @@ function Redirect(props: Database["public"]["Tables"]["links"]["Row"]) {
 	async function gatherStatsData() {
 		const date = new Date();
 
-		const formattedDate = `${date.getFullYear()}-${date.getMonth()}-${date.getDate()}`;
+		const formattedDate = `${date.getFullYear()}-${date.getMonth()+1}-${date.getDate()}`;
 
 		const { count, error } = await supabase
 			.from("link_visits")
@@ -31,8 +31,8 @@ function Redirect(props: Database["public"]["Tables"]["links"]["Row"]) {
 			const { error } = await supabase.from("link_visits").insert({
 				date: formattedDate,
 				link_id: props.id,
-				total_visits: 1,
-				unique_visits: 1,
+				total_visits: 0,
+				unique_visits: 0,
 			});
 
 			if (error) return;
