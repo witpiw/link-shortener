@@ -10,7 +10,6 @@ export default function Home() {
 	return (
 		<>
 			<Flex direction={"column"} justify={"center"} align={"center"} gap={15}>
-				<Header />
 				<div>
 					<If condition={!!user}>
 						<Then>

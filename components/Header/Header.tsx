@@ -1,14 +1,18 @@
+import { useLinkOrigin } from "../../hooks";
+
 import { Heading, Flex, Button, Icon } from "@chakra-ui/react";
 import { useSupabaseClient } from "@supabase/auth-helpers-react";
+import Link from "next/link";
 import { useRouter } from "next/router";
 
 function Header() {
 	const supabase = useSupabaseClient();
 	const router = useRouter();
+	const link = useLinkOrigin();
 
 	return (
 		<Flex p="4" justifyContent="space-between" w={"100%"}>
-			<Heading as="h1">Link shortener</Heading>
+			<Heading as="h1" _hover={{textDecoration: "underline"}}><Link href={link}>Link shortener</Link></Heading>
 			<Button
 				variant={"outline"}
 				onClick={() => {
