@@ -3,7 +3,7 @@ const Chart = dynamic(() => import('../../components').then((mod) => mod.Chart),
 	loading: () => <Loading height={300}/>
 });
 
-import { useMemo, useRef, useEffect } from 'react';
+import { useMemo } from 'react';
 import { createServerSupabaseClient } from "@supabase/auth-helpers-nextjs";
 import { Flex, Heading } from '@chakra-ui/react';
 import dynamic from 'next/dynamic';
@@ -11,6 +11,7 @@ import { useWindowSize } from 'usehooks-ts';
 
 import { Loading } from '../../components';
 import { getNextRedirect } from "../../utils";
+import {useLinkOrigin} from '../../hooks';
 
 import type { Database } from "../../types/supabase";
 import type { GetServerSidePropsContext } from "next";
@@ -21,7 +22,7 @@ type IProps = Database["public"]["Tables"]["links"]["Row"] & {link_visits:Databa
 
 function Stats(props: IProps) {
 	const {width} = useWindowSize()
-	const link = useRef("")
+	const link = useLinkOrigin("/" + props.link_slug)
 
 	const data = useMemo(() => {
 		return [...props.link_visits].sort((a,b) => {
@@ -44,14 +45,10 @@ function Stats(props: IProps) {
 		}, 0)
 	}, [props.link_visits])
 
-	useEffect(() => {
-		link.current = window.location.origin + "/" + props.link_slug
-	}, [props])
-
 	return (
 		<>
 			<Flex width="100%" direction={"column"} justify={"center"} align="center" gap={"3rem"}>
-				<Heading size={"lg"} textAlign={"center"}>Link: <Link style={{textDecoration: "underline"}} href={link.current}>{link.current}</Link></Heading>
+				<Heading size={"lg"} textAlign={"center"}>Link: <Link style={{textDecoration: "underline"}} href={link}>{link}</Link></Heading>
 				<Flex gap={"2rem"}>
 					<Heading size={"md"} textAlign={"center"}>Total visits: {totalVisist}</Heading>
 					<Heading size={"md"} textAlign={"center"}>Unique visits: {uniqueVisist}</Heading>
