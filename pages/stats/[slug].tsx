@@ -120,8 +120,6 @@ function Stats() {
 }
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
-  if (!context.params) return;
-
   const supabase = createServerSupabaseClient<Database>(context);
 
   const user = await supabase.auth.getUser();
