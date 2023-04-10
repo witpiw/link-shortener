@@ -1,34 +1,27 @@
-import { LinkList, Modal, Header } from "../components";
+import { LinkList, Modal, Loading } from "../components";
 
-import { Flex, Text } from "@chakra-ui/react";
+import { Flex } from "@chakra-ui/react";
 import { If, Then, Else } from "react-if";
 import { useUser } from "@supabase/auth-helpers-react";
 
 export default function Home() {
-	const user = useUser();
+  const user = useUser();
 
-	return (
-		<>
-			<Flex direction={"column"} justify={"center"} align={"center"} gap={15}>
-				<div>
-					<If condition={!!user}>
-						<Then>
-							<Flex
-								direction={"column"}
-								justify="center"
-								align="center"
-								gap={8}
-							>
-								<LinkList />
-								<Modal />
-							</Flex>
-						</Then>
-						<Else>
-							<Text>Loading ...</Text>
-						</Else>
-					</If>
-				</div>
-			</Flex>
-		</>
-	);
+  return (
+    <Flex direction={"column"} justify={"center"} align={"center"} gap={15}>
+      <div>
+        <If condition={!!user}>
+          <Then>
+            <Flex direction={"column"} justify="center" align="center" gap={8}>
+              <LinkList />
+              <Modal />
+            </Flex>
+          </Then>
+          <Else>
+            <Loading />
+          </Else>
+        </If>
+      </div>
+    </Flex>
+  );
 }
