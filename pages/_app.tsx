@@ -11,31 +11,37 @@ import { theme } from "../theme";
 import "@fontsource/montserrat";
 import { Header } from "../components";
 
-const EXCLUDED_FROM_LAYOUT = ['/[slug]']
+const EXCLUDED_FROM_LAYOUT = ["/[slug]", "/login"];
 
 function MyApp({
-	Component,
-	pageProps,
-	...appProps
+  Component,
+  pageProps,
+  ...appProps
 }: AppProps<{
-	initialSession: Session;
+  initialSession: Session;
 }>) {
-	const [supabaseClient] = useState(() =>
-		createBrowserSupabaseClient<Database>()
-	);
+  const [supabaseClient] = useState(() =>
+    createBrowserSupabaseClient<Database>()
+  );
 
-	const pageContent = () => EXCLUDED_FROM_LAYOUT.includes(appProps.router.pathname) ? <Component {...pageProps} /> : <><Header/><Component {...pageProps} /></>
+  const pageContent = () =>
+    EXCLUDED_FROM_LAYOUT.includes(appProps.router.pathname) ? (
+      <Component {...pageProps} />
+    ) : (
+      <>
+        <Header />
+        <Component {...pageProps} />
+      </>
+    );
 
-	return (
-		<SessionContextProvider
-			supabaseClient={supabaseClient}
-			initialSession={pageProps.initialSession}
-		>
-			<ChakraProvider theme={theme}>
-				{pageContent()}
-			</ChakraProvider>
-		</SessionContextProvider>
-	);
+  return (
+    <SessionContextProvider
+      supabaseClient={supabaseClient}
+      initialSession={pageProps.initialSession}
+    >
+      <ChakraProvider theme={theme}>{pageContent()}</ChakraProvider>
+    </SessionContextProvider>
+  );
 }
 
 export default MyApp;
